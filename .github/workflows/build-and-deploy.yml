@@ -1,8 +1,8 @@
-name: "Build and Deploy"
+name: "IdentityAPI Build and Deploy"
 
 on: [push, workflow_dispatch]
 env:
-  AZURE_API_NAME: identityAPI
+  AZURE_API_NAME: identity-trial
   AZURE_API_PACKAGE_PATH: "./published"
   NETCORE_VERSION: "8.0.300"
 
