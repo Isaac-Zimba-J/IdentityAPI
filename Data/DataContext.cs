@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityAPI.Data;
 
-public class DbContext : IdentityDbContext
+public class DataContext : IdentityDbContext<ApplicationUser>
 {
-    public DbContext(DbContextOptions<DbContext> options) : base(options)
+    public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
         
     }
