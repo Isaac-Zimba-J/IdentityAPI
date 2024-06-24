@@ -1,0 +1,35 @@
+name: "Build and Deploy"
+
+on: [push, workflow_dispatch]
+env:
+  AZURE_API_NAME: identityAPI
+  AZURE_API_PACKAGE_PATH: "./published"
+  NETCORE_VERSION: "8.0.300"
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION }}
+        uses: actions/setuo-dotnet@v1
+        with:
+          dotnet-version: ${{  env.NETCORE_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Publish
+        run: dotnet publish --configuration Release --no-build  -output ${{ env.AZURE_API_PACKAGE_PATH }}
+
+      - name: "Deploy to Azure"
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_API_NAME }}
+          publish-profile: ${{ secrets.AZURE_GITHUB_SECRET }}
+          package: ${{ env.AZURE_API_PACKAGE_PATH }}
